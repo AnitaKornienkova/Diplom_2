@@ -13,6 +13,8 @@ import org.junit.runners.Parameterized;
 
 import java.util.List;
 
+import static org.example.utils.Constants.STELLAR_BURGERS_URL;
+
 @RunWith(Parameterized.class)
 public class GetOrdersTest {
     private String token;
@@ -24,14 +26,14 @@ public class GetOrdersTest {
 
     @Before
     public void setUp() {
-        RestAssured.baseURI = "https://stellarburgers.nomoreparties.site";
+        RestAssured.baseURI = STELLAR_BURGERS_URL;
         UserData userData = new UserData(
                 "someuser@email.com",
                 "somepassword",
                 "someusername0001"
         );
 
-        token = UserSteps.successfullyRegisterUser(userData);
+        token = UserSteps.registerUserAndExpectSuccess(userData);
 
         OrderData orderData = new OrderData(
                 List.of(
@@ -41,13 +43,13 @@ public class GetOrdersTest {
                 )
         );
         for (int i = 0; i < expectedQuantity; i++) {
-            OrderSteps.successfullyCreateOrder(orderData, token);
+            OrderSteps.createOrderAndExpectSuccess(orderData, token);
         }
     }
 
     @Test
     public void getOrdersTest() {
-        OrderSteps.getAllUserOrders(expectedQuantity, token);
+        OrderSteps.requestAllUserOrdersAndExpectSuccess(expectedQuantity, token);
     }
 
     @After

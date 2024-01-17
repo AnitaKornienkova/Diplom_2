@@ -8,12 +8,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.example.utils.Constants.STELLAR_BURGERS_URL;
+
 public class ModifyUserTest {
     private String token;
 
     @Before
     public void setUp() {
-        RestAssured.baseURI = "https://stellarburgers.nomoreparties.site";
+        RestAssured.baseURI = STELLAR_BURGERS_URL;
     }
 
     @Test
@@ -24,10 +26,10 @@ public class ModifyUserTest {
                 "someusername0001"
         );
 
-        token = UserSteps.successfullyRegisterUser(userData);
+        token = UserSteps.registerUserAndExpectSuccess(userData);
 
         UserData newUserData = new UserData("anotheruser@email.com", null, null);
-        UserSteps.modifyUserData(newUserData, token);
+        UserSteps.modifyUserDataAndExpectSuccess(newUserData, token);
     }
 
     @Test
@@ -38,10 +40,10 @@ public class ModifyUserTest {
                 "someusername0001"
         );
 
-        token = UserSteps.successfullyRegisterUser(userData);
+        token = UserSteps.registerUserAndExpectSuccess(userData);
 
         UserData newUserData = new UserData(null, null, "anotherUserName");
-        UserSteps.modifyUserData(newUserData, token);
+        UserSteps.modifyUserDataAndExpectSuccess(newUserData, token);
     }
 
     @Test
@@ -52,17 +54,17 @@ public class ModifyUserTest {
                 "someusername0001"
         );
 
-        token = UserSteps.successfullyRegisterUser(userData);
+        token = UserSteps.registerUserAndExpectSuccess(userData);
 
         UserData newUserData = new UserData(null, "anotherPassword", null);
-        UserSteps.modifyUserData(newUserData, token);
-        token = UserSteps.successfullyAuthUser(new UserCredentials("someuser@email.com", "anotherPassword"));
+        UserSteps.modifyUserDataAndExpectSuccess(newUserData, token);
+        token = UserSteps.authenticateAndExpectSuccess(new UserCredentials("someuser@email.com", "anotherPassword"));
     }
 
     @Test
     public void modifyNonAuthorizedUser() {
         UserData newUserData = new UserData("anotheruser@email.com", null, null);
-        UserSteps.modifyNotAuthorizedUser(newUserData);
+        UserSteps.expectErrorOnNotAuthorizedUserModification(newUserData);
     }
 
     @After

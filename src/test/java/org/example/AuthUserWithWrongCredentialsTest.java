@@ -10,6 +10,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import static org.example.utils.Constants.STELLAR_BURGERS_URL;
+
 @RunWith(Parameterized.class)
 public class AuthUserWithWrongCredentialsTest {
     private String token;
@@ -21,7 +23,7 @@ public class AuthUserWithWrongCredentialsTest {
 
     @Before
     public void setUp() {
-        RestAssured.baseURI = "https://stellarburgers.nomoreparties.site";
+        RestAssured.baseURI = STELLAR_BURGERS_URL;
     }
 
     @Test
@@ -30,9 +32,9 @@ public class AuthUserWithWrongCredentialsTest {
         String password = "somepassword";
         UserData userData = new UserData(email, password, "someusername");
 
-        token = UserSteps.successfullyRegisterUser(userData);
+        token = UserSteps.registerUserAndExpectSuccess(userData);
 
-        UserSteps.authUserWithWrongCredentials(userCredentials);
+        UserSteps.expectErrorOnAuthenticationWithWrongCredentials(userCredentials);
     }
 
     @After

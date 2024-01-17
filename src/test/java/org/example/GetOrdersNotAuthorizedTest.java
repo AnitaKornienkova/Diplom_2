@@ -5,14 +5,16 @@ import org.example.steps.OrderSteps;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.example.utils.Constants.STELLAR_BURGERS_URL;
+
 public class GetOrdersNotAuthorizedTest {
     @Before
     public void setUp() {
-        RestAssured.baseURI = "https://stellarburgers.nomoreparties.site";
+        RestAssured.baseURI = STELLAR_BURGERS_URL;
     }
 
     @Test
     public void getOrdersWithoutAuthorizationTest() {
-        OrderSteps.getAllUserOrdersWithoutAuthorization();
+        OrderSteps.expectErrorOnRequestingAllUserOrdersWithoutAuthorization();
     }
 }

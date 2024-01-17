@@ -8,12 +8,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.example.utils.Constants.STELLAR_BURGERS_URL;
+
 public class AuthUserSuccessfullyTest {
     private String token;
 
     @Before
     public void setUp() {
-        RestAssured.baseURI = "https://stellarburgers.nomoreparties.site";
+        RestAssured.baseURI = STELLAR_BURGERS_URL;
     }
 
     @Test
@@ -22,9 +24,9 @@ public class AuthUserSuccessfullyTest {
         String password = "somepassword";
         UserData userData = new UserData(email, password, "someusername");
 
-        token = UserSteps.successfullyRegisterUser(userData);
+        token = UserSteps.registerUserAndExpectSuccess(userData);
 
-        UserSteps.successfullyAuthUser(new UserCredentials(email, password));
+        UserSteps.authenticateAndExpectSuccess(new UserCredentials(email, password));
     }
 
     @After

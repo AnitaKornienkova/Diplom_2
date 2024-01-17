@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import static org.example.utils.Constants.STELLAR_BURGERS_URL;
+
 @RunWith(Parameterized.class)
 public class CreateUserInvalidDataTest {
     private final UserData userData;
@@ -18,12 +20,12 @@ public class CreateUserInvalidDataTest {
 
     @Before
     public void setUp() {
-        RestAssured.baseURI = "https://stellarburgers.nomoreparties.site";
+        RestAssured.baseURI = STELLAR_BURGERS_URL;
     }
 
     @Test
     public void testInvalid() {
-        UserSteps.registerInvalidUserData(userData);
+        UserSteps.expectErrorOnRegistrationUserWithInvalidData(userData);
     }
 
     @Parameterized.Parameters

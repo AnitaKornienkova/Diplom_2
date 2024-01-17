@@ -1,9 +1,7 @@
 package org.example.steps;
 
 import io.qameta.allure.Step;
-import io.restassured.response.ValidatableResponse;
 import org.example.model.OrderData;
-import org.example.model.UserData;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -11,7 +9,7 @@ import static org.hamcrest.core.Is.is;
 
 public class OrderSteps {
     @Step("Successfully create order")
-    public static void successfullyCreateOrder(OrderData orderData, String token) {
+    public static void createOrderAndExpectSuccess(OrderData orderData, String token) {
         given()
                 .header("Content-type", "application/json")
                 .header("Authorization", token)
@@ -27,7 +25,7 @@ public class OrderSteps {
     }
 
     @Step("Error on creating order without authorization")
-    public static void errorOnCreatingOrderWithoutAuthorization(OrderData orderData) {
+    public static void expectErrorOnCreatingOrderWithoutAuthorization(OrderData orderData) {
         // This case works strange due to real API response (it returns a random created before order).
         // In normal situation I would expect 401 response here, not an old already existing order.
         // Seems like it is a bug, but any information about expected behaviour is not provided in the API
@@ -45,7 +43,7 @@ public class OrderSteps {
     }
 
     @Step("Error on creating order without ingredients")
-    public static void errorOnCreatingOrderWithoutIngredients(OrderData orderData, String token) {
+    public static void expectErrorOnCreatingOrderWithoutIngredients(OrderData orderData, String token) {
         given()
                 .header("Content-type", "application/json")
                 .header("Authorization", token)
@@ -59,7 +57,7 @@ public class OrderSteps {
     }
 
     @Step("Error on creating order with wrong ingredients hash")
-    public static void errorOnCreatingOrderWithWrongIngredientsHash(OrderData orderData, String token) {
+    public static void expectErrorOnCreatingOrderWithWrongIngredientsHash(OrderData orderData, String token) {
         given()
                 .header("Content-type", "application/json")
                 .header("Authorization", token)
@@ -71,7 +69,7 @@ public class OrderSteps {
     }
 
     @Step("Get all user orders")
-    public static void getAllUserOrders(int expectedQuantity, String token) {
+    public static void requestAllUserOrdersAndExpectSuccess(int expectedQuantity, String token) {
         given()
                 .header("Content-type", "application/json")
                 .header("Authorization", token)
@@ -84,7 +82,7 @@ public class OrderSteps {
     }
 
     @Step("Error on getting all user orders without authorization")
-    public static void getAllUserOrdersWithoutAuthorization() {
+    public static void expectErrorOnRequestingAllUserOrdersWithoutAuthorization() {
         given()
                 .header("Content-type", "application/json")
                 .when()

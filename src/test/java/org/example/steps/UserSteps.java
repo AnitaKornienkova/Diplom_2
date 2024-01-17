@@ -12,7 +12,7 @@ import static org.hamcrest.core.Is.is;
 
 public class UserSteps {
     @Step("Successfully register user")
-    public static String successfullyRegisterUser(UserData userData) {
+    public static String registerUserAndExpectSuccess(UserData userData) {
         ValidatableResponse response = given()
                 .header("Content-type", "application/json")
                 .body(userData)
@@ -26,7 +26,7 @@ public class UserSteps {
     }
 
     @Step("Register duplicate user")
-    public static void registerDuplicateUser(UserData userData) {
+    public static void expectErrorOnDuplicateRegistration(UserData userData) {
         given()
                 .header("Content-type", "application/json")
                 .body(userData)
@@ -39,7 +39,7 @@ public class UserSteps {
     }
 
     @Step("Register invalid user data")
-    public static void registerInvalidUserData(UserData userData) {
+    public static void expectErrorOnRegistrationUserWithInvalidData(UserData userData) {
         given()
                 .header("Content-type", "application/json")
                 .body(userData)
@@ -52,7 +52,7 @@ public class UserSteps {
     }
 
     @Step("Successfully auth user")
-    public static String successfullyAuthUser(UserCredentials userCredentials) {
+    public static String authenticateAndExpectSuccess(UserCredentials userCredentials) {
         ValidatableResponse response = given()
                 .header("Content-type", "application/json")
                 .body(userCredentials)
@@ -68,7 +68,7 @@ public class UserSteps {
     }
 
     @Step("Auth user with wrong credentials")
-    public static void authUserWithWrongCredentials(UserCredentials userCredentials) {
+    public static void expectErrorOnAuthenticationWithWrongCredentials(UserCredentials userCredentials) {
         given()
                 .header("Content-type", "application/json")
                 .body(userCredentials)
@@ -81,7 +81,7 @@ public class UserSteps {
     }
 
     @Step("Modify user successfully")
-    public static void modifyUserData(UserData userData, String token) {
+    public static void modifyUserDataAndExpectSuccess(UserData userData, String token) {
         ValidatableResponse response = given()
                 .header("Content-type", "application/json")
                 .header("Authorization", token)
@@ -102,7 +102,7 @@ public class UserSteps {
     }
 
     @Step("Modify not authorized user")
-    public static void modifyNotAuthorizedUser(UserData userData) {
+    public static void expectErrorOnNotAuthorizedUserModification(UserData userData) {
         given()
                 .header("Content-type", "application/json")
                 .body(userData)

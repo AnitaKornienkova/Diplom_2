@@ -12,20 +12,21 @@ import org.junit.Test;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
+import static org.example.utils.Constants.STELLAR_BURGERS_URL;
 
 public class CreateOrderTest {
     private String token;
 
     @Before
     public void setUp() {
-        RestAssured.baseURI = "https://stellarburgers.nomoreparties.site";
+        RestAssured.baseURI = STELLAR_BURGERS_URL;
         UserData userData = new UserData(
                 "someuser@email.com",
                 "somepassword",
                 "someusername0001"
         );
 
-        token = UserSteps.successfullyRegisterUser(userData);
+        token = UserSteps.registerUserAndExpectSuccess(userData);
     }
 
     @Test
@@ -38,7 +39,7 @@ public class CreateOrderTest {
                 )
         );
 
-        OrderSteps.successfullyCreateOrder(orderData, token);
+        OrderSteps.createOrderAndExpectSuccess(orderData, token);
     }
 
     @Test
@@ -51,14 +52,14 @@ public class CreateOrderTest {
                 )
         );
 
-        OrderSteps.errorOnCreatingOrderWithoutAuthorization(orderData);
+        OrderSteps.expectErrorOnCreatingOrderWithoutAuthorization(orderData);
     }
 
     @Test
     public void createOrderWithoutIngredients() {
         OrderData orderData = new OrderData(emptyList());
 
-        OrderSteps.errorOnCreatingOrderWithoutIngredients(orderData, token);
+        OrderSteps.expectErrorOnCreatingOrderWithoutIngredients(orderData, token);
     }
 
     @Test
@@ -71,7 +72,7 @@ public class CreateOrderTest {
                 )
         );
 
-        OrderSteps.errorOnCreatingOrderWithWrongIngredientsHash(orderData, token);
+        OrderSteps.expectErrorOnCreatingOrderWithWrongIngredientsHash(orderData, token);
     }
 
     @After
